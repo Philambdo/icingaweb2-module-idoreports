@@ -94,7 +94,7 @@ CREATE TEMP TABLE events_duration AS (
 				r_state as state,
 				r_last_state as last_state 
 		FROM 
-			icinga_normalized_history ( id, v_start_ts, v_end_ts, sla_timeperiod_object_id )
+			fetch_history ( id, v_start_ts, v_end_ts, sla_timeperiod_object_id )
 	) events
 	  ORDER BY events.state_time ASC,
     	CASE events.type 
