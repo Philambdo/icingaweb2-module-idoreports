@@ -14,7 +14,7 @@
 -- 2013-08-23: Refactored, added SLA time period support
 --
 
-DROP FUNCTION IF EXISTS fetch_history;
+DROP FUNCTION IF EXISTS fetch_history();
 CREATE OR REPLACE FUNCTION fetch_history (
 	id BIGINT,
 	start_ts TIMESTAMP, 

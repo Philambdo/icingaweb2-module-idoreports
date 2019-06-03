@@ -15,7 +15,7 @@
 -- 2019-05-15: Rewritten for postgres 
 --
 
-DROP FUNCTION IF EXISTS idoreports_get_sla_ok_percent;
+DROP FUNCTION IF EXISTS idoreports_get_sla_ok_percent();
 CREATE OR REPLACE FUNCTION idoreports_get_sla_ok_percent (
 	id BIGINT,
 	start_ts TIMESTAMP, 

@@ -14,7 +14,7 @@
 -- 2013-08-23: Refactored, added SLA time period support
 --
 
-DROP FUNCTION IF EXISTS icinga_sla_updown_period;
+DROP FUNCTION IF EXISTS icinga_sla_updown_period();
 CREATE OR REPLACE FUNCTION icinga_sla_updown_period (
 	id BIGINT,
 	start_ts TIMESTAMP, 
