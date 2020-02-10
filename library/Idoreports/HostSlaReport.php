@@ -30,6 +30,14 @@ class HostSlaReport extends IdoReport
                 'month' => 'Month'
             ]
         ]);
+
+        $form->addElement('number', 'threshold', [
+            'label'       => 'Threshold',
+            'placeholder' => '99.5',
+            'step'        => '0.01',
+            'min'         => '1',
+            'max'         => '100'
+        ]);
     }
 
     protected function fetchSla(Timerange $timerange, array $config = null)
@@ -37,9 +45,6 @@ class HostSlaReport extends IdoReport
         $rd = new ReportData();
 
         if (isset($config['breakdown']) && $config['breakdown'] !== 'none') {
-            $start = clone $timerange->getStart();
-            $end = clone $timerange->getEnd();
-
             switch ($config['breakdown']) {
                 case 'day':
                     $interval = new \DateInterval('P1D');
@@ -55,24 +60,18 @@ class HostSlaReport extends IdoReport
                     break;
             }
 
-            $end->add($interval);
-
-            $period = new \DatePeriod($start, $interval ,$end, \DatePeriod::EXCLUDE_START_DATE);
-
             $rd
                 ->setDimensions(['Hostname', ucfirst($config['breakdown'])])
                 ->setValues(['SLA in %']);
 
             $rows = [];
 
-            foreach ($period as $date) {
-                foreach ($this->fetchHostSla(new Timerange($start, $date), $config) as $row) {
+            foreach ($this->yieldTimerange($timerange, $interval) as list($start, $end)) {
+                foreach ($this->fetchHostSla(new Timerange($start, $end), $config) as $row) {
                     $rows[] = (new ReportRow())
-                        ->setDimensions([$row->host_display_name, $date->format($format)])
+                        ->setDimensions([$row->host_display_name, $start->format($format)])
                         ->setValues([(float) $row->sla]);
                 }
-
-                $start = $date;
             }
 
             $rd->setRows($rows);
