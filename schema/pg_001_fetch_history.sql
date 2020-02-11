@@ -30,6 +30,7 @@ CREATE OR REPLACE FUNCTION fetch_history_in_sla (
   AS $_$
   DECLARE 
   BEGIN
+   set search_path = public, monitoring_import;
 
   -- RAISE NOTICE 'start_ts: %, end_ts: %', start_ts, end_ts;
 
